@@ -40,7 +40,7 @@ class QuoteController extends Controller
         $chuckQuote = $chuckData["value"];
 
         $data["quote"] = $chuckQuote;
-        $data["quoteSource"] = "Chuck Norris"; 
+        $data["quote_source"] = "Chuck Norris"; 
 
 
         //cat fact quote
@@ -53,13 +53,13 @@ class QuoteController extends Controller
         $catFact = $catData["fact"];
 
         $data["fact"] = $catFact;
-        $data["factSource"] = "Cat Facts"; 
+        $data["fact_source"] = "Cat Facts"; 
 
         // dog fact api currently offline
 
         return response()->json([
             "status" => "Success",
-            "statusCode" => 200,
+            "status_code" => 200,
             "message" => "Success get quotes",
             "data" => $data,
         ], 200);

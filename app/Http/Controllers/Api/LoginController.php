@@ -23,11 +23,10 @@ class LoginController extends Controller
             if (count($rc) == 0)  {
                 return response()->json([
                     "status" => "Forbidden",
-                    "statusCode" => 403,
+                    "status_code" => 403,
                     "message" => "Login failed",
                     "data" => null,
                 ], 403);
-    
             }    
 
             //generate token
@@ -35,14 +34,14 @@ class LoginController extends Controller
             $token = md5(time().$id.$email);
 
             //update token to database
-            $sqli = "UPDATE users set token = '".$token."' where id = ".$id;
-            DB::update($sqli);
+            $sqlu = "UPDATE users set token = '".$token."' where id = ".$id;
+            DB::update($sqlu);
 
             $data["token"] = $token;
 
             return response()->json([
                 "status" => "Success",
-                "statusCode" => 200,
+                "status_code" => 200,
                 "message" => "Success Login",
                 "data" => $data,
             ], 200);
@@ -50,7 +49,7 @@ class LoginController extends Controller
         } else {
             return response()->json([
                 "status" => "Bad Request",
-                "statusCode" => 400,
+                "status_code" => 400,
                 "message" => "Email and Password required",
                 "data" => null,
             ], 400);

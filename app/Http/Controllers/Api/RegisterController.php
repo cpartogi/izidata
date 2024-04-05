@@ -25,7 +25,7 @@ class RegisterController extends Controller
             if (count($rc) > 0)  {
                 return response()->json([
                     "status" => "Conflict",
-                    "statusCode" => 409,
+                    "status_code" => 409,
                     "message" => "Email already exist",
                     "data" => null,
                 ], 409);
@@ -36,7 +36,6 @@ class RegisterController extends Controller
              $sqli = "INSERT INTO users (email, password) values ('".$email."', '".$password."')";
              DB::insert($sqli);
 
-
             //get id  of the user just registered 
             $sqls = "SELECT id from users where email='".$email."'";
             $rs=DB::select($sqls);
@@ -46,7 +45,7 @@ class RegisterController extends Controller
 
             return response()->json([
                 "status" => "Success",
-                "statusCode" => 200,
+                "status_code" => 200,
                 "message" => "Success register",
                 "data" => $data,
             ], 200);
@@ -54,7 +53,7 @@ class RegisterController extends Controller
         } else {
             return response()->json([
                 "status" => "Bad Request",
-                "statusCode" => 400,
+                "status_code" => 400,
                 "message" => "Email and Password required",
                 "data" => null,
             ], 400);
