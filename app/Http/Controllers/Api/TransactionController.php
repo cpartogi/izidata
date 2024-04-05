@@ -98,6 +98,8 @@ class TransactionController extends Controller
             
             DB::table('transaction')->insert($insertData);
 
+            sleep(30);
+
             $amountAvailable = $balance - $amount;
 
             //update balance
