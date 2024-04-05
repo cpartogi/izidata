@@ -15,12 +15,14 @@ class LoginController extends Controller
             $email = $request->json('email');
             $password = $request->json('password');
 
-
             //check if login valid
-            $sqlc = "SELECT id FROM users where email = '".$email."' and password='".$password."' ";
-            $rc=DB::select($sqlc);
-           
-            if (count($rc) == 0)  {
+            $user = DB::table('users')
+                ->select('id')
+                ->where('email', $email)
+                ->where('password', $password)
+                ->first();
+
+            if (!$user)  {
                 return response()->json([
                     "status" => "Forbidden",
                     "status_code" => 403,
@@ -30,12 +32,13 @@ class LoginController extends Controller
             }    
 
             //generate token
-            $id=$rc[0]->id;
+            $id=$user->id;
             $token = md5(time().$id.$email);
 
             //update token to database
-            $sqlu = "UPDATE users set token = '".$token."' where id = ".$id;
-            DB::update($sqlu);
+            DB::table('users')
+                ->where('id', $id)
+                ->update(['token' => $token]);
 
             $data["token"] = $token;
 

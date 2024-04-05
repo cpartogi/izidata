@@ -24,8 +24,7 @@ class TransactionController extends Controller
                     "data" => null,
                 ], 403);
             }
-            
-            //check token valid
+
             $sqlc = "SELECT id FROM users where token = '".$token."'";
             $rc=DB::select($sqlc);
            
@@ -52,10 +51,11 @@ class TransactionController extends Controller
             }
 
             //check balance
-            $sqlbalance = "SELECT amount_available FROM balance where user_id = ".$id."";
-            $rb=DB::select($sqlbalance);
+            $balance = DB::table('balance')
+                ->where('user_id', $id)
+                ->value('amount_available');
 
-            if (count($rb) == 0)  {
+            if (!$balance) {
                 return response()->json([
                     "status" => "Bad Request",
                     "status_code" => 400,
@@ -63,8 +63,6 @@ class TransactionController extends Controller
                     "data" => null,
                 ], 400);
             }    
-
-            $balance = $rb[0]->amount_available;
 
             if ($balance < $amount) {
                 return response()->json([
@@ -90,17 +88,27 @@ class TransactionController extends Controller
             }
 
             //insert table transactions
-            $sqli = "INSERT INTO `transaction` (trx_id, user_id, amount, created_at, updated_at) values ('".$trxId."', ".$id.", ".$amount.", now(), now())";
-            DB::insert($sqli);
+            $insertData = [
+                'trx_id' => $trxId,
+                'user_id' => $id,
+                'amount' => $amount,
+                'created_at' => now(),
+                'updated_at' => now()
+            ];
+            
+            DB::table('transaction')->insert($insertData);
 
             $amountAvailable = $balance - $amount;
 
             //update balance
-            $sqlu = "UPDATE balance set amount_available = '".$amountAvailable."', updated_at = now() where user_id = ".$id;
-            DB::update($sqlu);
+            DB::table('balance')
+                ->where('user_id', $id)
+                ->update([
+                    'amount_available' => $amountAvailable,
+                    'updated_at' => now()
+                ]);
 
             DB::commit();
-
 
             $data["user_id"] = $id;
             $data["trx_id"] = $trxId;
@@ -110,7 +118,7 @@ class TransactionController extends Controller
             return response()->json([
                 "status" => "Success",
                 "status_code" => 200,
-                "message" => "Success Login",
+                "message" => "Success transaction",
                 "data" => $data,
             ], 200);
 
@@ -118,11 +126,9 @@ class TransactionController extends Controller
             return response()->json([
                 "status" => "Bad Request",
                 "status_code" => 400,
-                "message" => "trx id and amount",
+                "message" => "trx id and amount required",
                 "data" => null,
             ], 400);
         }    
-        
-
     }
 }

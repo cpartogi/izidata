@@ -16,13 +16,13 @@ class RegisterController extends Controller
             $email = $request->json('email');
             $password = $request->json('password');
 
-
             //check if email exist
-            $sqlc = "SELECT id FROM users where email = '".$email."'";
-            $rc=DB::select($sqlc);
-           
+            $exists = DB::table('users')
+                ->select('id')
+                ->where('email', $email)
+                ->exists();
 
-            if (count($rc) > 0)  {
+            if ($exists)  {
                 return response()->json([
                     "status" => "Conflict",
                     "status_code" => 409,
@@ -32,14 +32,11 @@ class RegisterController extends Controller
     
             }    
 
-             //insert to database
-             $sqli = "INSERT INTO users (email, password) values ('".$email."', '".$password."')";
-             DB::insert($sqli);
-
-            //get id  of the user just registered 
-            $sqls = "SELECT id from users where email='".$email."'";
-            $rs=DB::select($sqls);
-            $id=$rs[0]->id;
+            //insert to database
+            $id=DB::table('users')->insertGetId([
+                'email' => $email,
+                'password' => $password,
+            ]);
 
             $data["user_id"] = $id;
 
@@ -58,7 +55,5 @@ class RegisterController extends Controller
                 "data" => null,
             ], 400);
         }    
-        
-
     }
 }
