@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->string('trx_id')->unique();
             $table->bigInteger('user_id')->index();
-            $table->decimal('amount',10,0);
+            $table->decimal('amount',10,6);
             $table->timestamp('created_at')->nullable();
             $table->timestamp('updated_at')->nullable();
         });

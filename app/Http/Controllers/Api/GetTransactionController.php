@@ -37,6 +37,9 @@ class GetTransactionController extends Controller
                 $amount = $rs_->amount;
                 $date = $rs_->created_at;
 
+                $amount = number_format($amount, 6, '.', ''); 
+                $amountAvailable = number_format($amountAvailable, 6, '.', ''); 
+
                 if (!isset($data[$userId])) {
                     $data[$userId] = [
                         'user_id' => $userId,

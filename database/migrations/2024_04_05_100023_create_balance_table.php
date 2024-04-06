@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('balance', function (Blueprint $table) {
 
             $table->id();
-            $table->decimal('amount_available',10,0);
+            $table->decimal('amount_available',10,6);
             $table->bigInteger('user_id')->index();
             $table->timestamp('created_at')->nullable();
             $table->timestamp('updated_at')->nullable();

@@ -120,8 +120,8 @@ class TransactionController extends Controller
 
             $data["user_id"] = $id;
             $data["trx_id"] = $trxId;
-            $data["amount"] = $amount;
-            $data["balance"] = $amountAvailable; 
+            $data["amount"] = number_format($amount, 6, '.', ''); 
+            $data["balance"] = number_format($amountAvailable, 6, '.', ''); 
             
             return response()->json([
                 "status" => "Success",
