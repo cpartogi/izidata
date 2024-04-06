@@ -5,7 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Facades\Hash;
+use Carbon\Carbon;
 
 class LoginController extends Controller
 {
@@ -15,20 +16,32 @@ class LoginController extends Controller
             $email = $request->json('email');
             $password = $request->json('password');
 
+            //$hashPassword = Hash::make($password);
+
             //check if login valid
             $user = DB::table('users')
-                ->select('id')
+                ->select('id', 'password')
                 ->where('email', $email)
-                ->where('password', $password)
                 ->first();
 
             if (!$user)  {
                 return response()->json([
-                    "status" => "Forbidden",
-                    "status_code" => 403,
-                    "message" => "Login failed",
+                    "status" => "Not Found",
+                    "status_code" => 404,
+                    "message" => "email not found",
+                    "timestamp" => Carbon::now('UTC')->toIso8601String(),
                     "data" => null,
-                ], 403);
+                ], 404);
+            }    
+
+            if(!Hash::check($password, $user->password)){
+                return response()->json([
+                    "status" => "Bad Request",
+                    "status_code" => 400,
+                    "message" => "password not match",
+                    "timestamp" => Carbon::now('UTC')->toIso8601String(),
+                    "data" => null,
+                ], 400);
             }    
 
             //generate token
@@ -46,6 +59,7 @@ class LoginController extends Controller
                 "status" => "Success",
                 "status_code" => 200,
                 "message" => "Success Login",
+                "timestamp" => Carbon::now('UTC')->toIso8601String(),
                 "data" => $data,
             ], 200);
 
@@ -54,6 +68,7 @@ class LoginController extends Controller
                 "status" => "Bad Request",
                 "status_code" => 400,
                 "message" => "Email and Password required",
+                "timestamp" => Carbon::now('UTC')->toIso8601String(),
                 "data" => null,
             ], 400);
         }    

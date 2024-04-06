@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
+use Carbon\Carbon;
 
 class TransactionController extends Controller
 {
@@ -21,6 +21,7 @@ class TransactionController extends Controller
                     "status" => "Forbidden",
                     "status_code" => 403,
                     "message" => "Login failed",
+                    "timestamp" => Carbon::now('UTC')->toIso8601String(),
                     "data" => null,
                 ], 403);
             }
@@ -33,6 +34,7 @@ class TransactionController extends Controller
                     "status" => "Forbidden",
                     "status_code" => 403,
                     "message" => "Login failed",
+                    "timestamp" => Carbon::now('UTC')->toIso8601String(),
                     "data" => null,
                 ], 403);
             }    
@@ -46,6 +48,7 @@ class TransactionController extends Controller
                     "status" => "Bad Request",
                     "status_code" => 400,
                     "message" => "invalid amount",
+                    "timestamp" => Carbon::now('UTC')->toIso8601String(),
                     "data" => null,
                 ], 400);
             }
@@ -60,6 +63,7 @@ class TransactionController extends Controller
                     "status" => "Bad Request",
                     "status_code" => 400,
                     "message" => "Insufficient",
+                    "timestamp" => Carbon::now('UTC')->toIso8601String(),
                     "data" => null,
                 ], 400);
             }    
@@ -69,6 +73,7 @@ class TransactionController extends Controller
                     "status" => "Bad Request",
                     "status_code" => 400,
                     "message" => "Insufficient",
+                    "timestamp" => Carbon::now('UTC')->toIso8601String(),
                     "data" => null,
                 ], 400);
             }
@@ -83,6 +88,7 @@ class TransactionController extends Controller
                     "status" => "Bad Request",
                     "status_code" => 400,
                     "message" => "Process failed",
+                    "timestamp" => Carbon::now('UTC')->toIso8601String(),
                     "data" => null,
                 ], 400);
             }
@@ -121,6 +127,7 @@ class TransactionController extends Controller
                 "status" => "Success",
                 "status_code" => 200,
                 "message" => "Success transaction",
+                "timestamp" => Carbon::now('UTC')->toIso8601String(),
                 "data" => $data,
             ], 200);
 
@@ -129,6 +136,7 @@ class TransactionController extends Controller
                 "status" => "Bad Request",
                 "status_code" => 400,
                 "message" => "trx id and amount required",
+                "timestamp" => Carbon::now('UTC')->toIso8601String(),
                 "data" => null,
             ], 400);
         }    

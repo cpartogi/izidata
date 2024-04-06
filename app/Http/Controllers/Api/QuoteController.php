@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-
+use Carbon\Carbon;
 class QuoteController extends Controller
 {
 
@@ -61,6 +61,7 @@ class QuoteController extends Controller
             "status" => "Success",
             "status_code" => 200,
             "message" => "Success get quotes",
+            "timestamp" => Carbon::now('UTC')->toIso8601String(),
             "data" => $data,
         ], 200);
 

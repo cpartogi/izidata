@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class GetTransactionController extends Controller
 {
@@ -60,6 +61,7 @@ class GetTransactionController extends Controller
                 "status" => "Success",
                 "status_code" => 200,
                 "message" => "Success get data",
+                "timestamp" => Carbon::now('UTC')->toIso8601String(),
                 "data" => $data,
             ], 200);
 
@@ -68,6 +70,7 @@ class GetTransactionController extends Controller
                 "status" => "Bad Request",
                 "status_code" => 400,
                 "message" => "page required",
+                "timestamp" => Carbon::now('UTC')->toIso8601String(),
                 "data" => null,
             ], 400);
         }    
