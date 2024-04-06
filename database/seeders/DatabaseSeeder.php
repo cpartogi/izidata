@@ -33,5 +33,23 @@ class DatabaseSeeder extends Seeder
             'amount_available' => '21',
             'user_id' => '4',
         ]);
+
+        DB::table('transaction')->insert([
+            'id' => '1',
+            'trx_id' => 'a',
+            'user_id' => '1',
+            'amount' => '0',
+            'created_at' => '2022-03-07 09:55:44',
+            'updated_at' => '2022-03-07 09:55:44',
+        ]);
+
+        DB::table('transaction')->insert([
+            'id' => '2',
+            'trx_id' => 'B',
+            'user_id' => '1',
+            'amount' => '0',
+            'created_at' => '2022-03-07 09:55:44',
+            'updated_at' => '2022-03-07 09:55:44',
+        ]);
     }
 }
